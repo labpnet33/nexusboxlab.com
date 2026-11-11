@@ -1,0 +1,77 @@
+/* Loaded first in <head> on every page, before anything else. The browser
+   waits for it before the first paint, so the page is brand-dark from frame
+   one - no white flash while the main CSS/JS arrive. A file, not an inline
+   <style>, because the production CSP blocks inline styles. */
+html {
+  background: #1e1b4b; /* first frame only: app.css sets it back to none (see there) */
+  color-scheme: dark;
+  /* Always reserve the scrollbar's space. The landing page scrolls, the lab
+     page usually doesn't; with classic (non-overlay) scrollbars the page width
+     changed by ~15px between them and everything right-aligned in the navbar
+     (credits, avatar) jumped sideways on every page change. */
+  scrollbar-gutter: stable;
+}
+
+/* The display font lives HERE, in a plain <link> that is never removed or
+   re-added. In dev, SvelteKit deletes its inline styles once the page starts
+   and Vite re-adds them; an @font-face in those styles was destroyed and
+   recreated on every load, the browser treated it as a new font, and text
+   flashed in the fallback font for a few frames (the navbar "size flash").
+   Its own family name, so the brand CSS's copy of Russo One is never used.
+   font-display: block + the preload in app.html: no fallback text normally.
+   Russo One is OFL-licensed (fonts/OFL.txt). */
+@font-face {
+  font-family: "NBL Russo One";
+  src: url("fonts/RussoOne-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: block;
+}
+
+/* Metric-matched fallback: a local Arial stretched and spaced to take up the
+   same room as Russo One, so if the fallback is ever used, swapping to the
+   real font moves nothing. Measured from both font files with fontTools
+   (2026-11-06): Russo One upper-case + digit advance averages 0.6521 em vs
+   Arial 0.6338 em; Russo One hhea ascent 0.926, descent 0.279, gap 0 (per em).
+   Liberation Sans / Arimo have Arial's exact metrics. */
+@font-face {
+  font-family: "Russo One Fallback";
+  src: local("Arial"), local("ArialMT"), local("Liberation Sans"), local("Arimo"), local("Helvetica");
+  size-adjust: 102.87%;
+  ascent-override: 90.01%;
+  descent-override: 27.12%;
+  line-gap-override: 0%;
+}
+
+/* Page changes: the navbar stays perfectly still and only the page content
+   fades in, briefly (opacity only - no movement, no delay before it starts,
+   works in every browser). Here, in boot.css, because this file is never
+   removed or re-added during load (see the font note above).
+   Where the browser supports cross-document view transitions it also
+   crossfades between the two pages, with the navbar held in place. */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
+  }
+  ::view-transition-group(*) { animation-duration: 350ms; }
+  .topbar { view-transition-name: nbl-topbar; }
+
+  /* Each top-level section of the page fades in and drifts up 10px into
+     place, one after another (80ms apart). transform/opacity only: it never
+     moves anything else on the page, and the navbar never animates. */
+  main > * { animation: nbl-page-in 450ms cubic-bezier(.22, 1, .36, 1) both; }
+  main > :nth-child(2) { animation-delay: 80ms; }
+  main > :nth-child(3) { animation-delay: 160ms; }
+  main > :nth-child(n + 4) { animation-delay: 220ms; }
+}
+@keyframes nbl-page-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* The brand CSS points --font-display at "Russo One"; this points it at the
+   face above. :root:root outranks the brand's :root, so this wins whatever
+   order the stylesheets end up in (dev re-injects them after load). */
+:root:root {
+  --font-display: "NBL Russo One", "Russo One Fallback", sans-serif;
+}
