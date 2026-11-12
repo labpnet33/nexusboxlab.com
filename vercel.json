@@ -5,6 +5,10 @@
     {
       "source": "/lab",
       "destination": "/lab-capture/lab.html"
+    },
+    {
+      "source": "/lab.html",
+      "destination": "/lab-capture/lab.html"
     }
   ],
   "redirects": [
