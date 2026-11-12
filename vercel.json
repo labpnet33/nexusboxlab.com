@@ -16,5 +16,12 @@
       "source": "/api/auth/:path*",
       "destination": "/lab"
     }
+  ],
+  "redirects": [
+    {
+      "source": "/lab/",
+      "destination": "/lab",
+      "permanent": true
+    }
   ]
 }
