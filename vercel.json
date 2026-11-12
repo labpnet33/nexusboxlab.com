@@ -28,6 +28,41 @@
   ],
   "redirects": [
     {
+      "source": "/lab.html",
+      "destination": "/lab",
+      "permanent": true
+    },
+    {
+      "source": "/en/lab",
+      "destination": "/lab",
+      "permanent": true
+    },
+    {
+      "source": "/en/lab/",
+      "destination": "/lab",
+      "permanent": true
+    },
+    {
+      "source": "/de/lab.html",
+      "destination": "/de/lab",
+      "permanent": true
+    },
+    {
+      "source": "/es/lab.html",
+      "destination": "/es/lab",
+      "permanent": true
+    },
+    {
+      "source": "/id/lab.html",
+      "destination": "/id/lab",
+      "permanent": true
+    },
+    {
+      "source": "/pt/lab.html",
+      "destination": "/pt/lab",
+      "permanent": true
+    },
+    {
       "source": "/lab/",
       "destination": "/lab",
       "permanent": true
