@@ -62,8 +62,17 @@
     const control = event.target.closest("a,button,[role='button']");
     if (!control) return;
     const href = control.getAttribute("href") || "";
+    // Start creating is always a direct guest entry point. Never run a
+    // sign-in/session/credit gate before opening the lab.
+    if (control.matches(".btn.cta.svelte-d8j1hi,[data-cta]")) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      location.assign("/lab");
+      return;
+    }
     if (authHref.test(href)) {
       event.preventDefault();
+      event.stopImmediatePropagation();
       location.assign("/lab");
     }
   }, true);
