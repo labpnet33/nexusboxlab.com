@@ -26,6 +26,22 @@
         headers: { "Content-Type": "application/json" }
       }));
     }
+
+    // Free renders are entirely client-side. In guest mode there is no account
+    // or credit service available, so let the renderer skip the save/charge
+    // reservation for a zero-cost export and continue with its local worker.
+    if (/^\/api\/credits\/export(?:\/|$)/i.test(pathname) &&
+        String(init?.method || "GET").toUpperCase() === "POST") {
+      let body = {};
+      try { body = JSON.parse(init?.body || "{}"); } catch {}
+      if (Number(body.expected_cost || 0) === 0) {
+        return Promise.resolve(new Response(JSON.stringify({ video: null }), {
+          status: 200,
+          headers: { "Content-Type": "application/json" }
+        }));
+      }
+    }
+
     return originalFetch(input, init);
   };
 
