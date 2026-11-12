@@ -1,6 +1,10 @@
 {
   "rewrites": [
     {
+      "source": "/lab/__data.json",
+      "destination": "/lab-capture/lab-data.json"
+    },
+    {
       "source": "/lab",
       "destination": "/lab-capture/lab.html"
     },
