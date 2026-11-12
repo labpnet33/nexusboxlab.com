@@ -8,6 +8,27 @@
   const authText = /\b(sign\s*in|log\s*in|google|anmelden|iniciar sesión|iniciar sesion|entrar|masuk|connexion)\b/i;
   const authHref = /(?:api\/auth|signin|sign-in|login)(?:\/|\?|$)/i;
 
+  // Keep legacy account endpoints from sending the static guest app into 404s.
+  const originalFetch = window.fetch.bind(window);
+  window.fetch = (input, init) => {
+    const rawUrl = typeof input === "string" ? input : input?.url || "";
+    let pathname = "";
+    try { pathname = new URL(rawUrl, location.href).pathname; } catch {}
+    if (/^\/api\/me(?:\/|$)/i.test(pathname)) {
+      return Promise.resolve(new Response(JSON.stringify({ signed_in: false, guest: true, disabled: true }), {
+        status: 200,
+        headers: { "Content-Type": "application/json" }
+      }));
+    }
+    if (/^\/api\/(?:auth|payments)(?:\/|$)/i.test(pathname)) {
+      return Promise.resolve(new Response(JSON.stringify({ signed_in: false, disabled: true }), {
+        status: 410,
+        headers: { "Content-Type": "application/json" }
+      }));
+    }
+    return originalFetch(input, init);
+  };
+
   function clean() {
     document.querySelectorAll(".guest-bar,[data-auth-only],[data-signin-only]").forEach((node) => node.remove());
 
