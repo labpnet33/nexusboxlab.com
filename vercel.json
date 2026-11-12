@@ -5,6 +5,14 @@
       "destination": "/lab-capture/lab.html"
     },
     {
+      "source": "/lab/",
+      "destination": "/lab-capture/lab.html"
+    },
+    {
+      "source": "/lab/:path*",
+      "destination": "/lab-capture/lab.html"
+    },
+    {
       "source": "/api/auth/:path*",
       "destination": "/lab"
     }
