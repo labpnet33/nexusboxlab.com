@@ -1,6 +1,5 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "cleanUrls": true,
   "rewrites": [
     {
       "source": "/lab",
@@ -9,12 +8,48 @@
     {
       "source": "/lab.html",
       "destination": "/lab-capture/lab.html"
+    },
+    {
+      "source": "/de/lab",
+      "destination": "/lab-capture/lab.html"
+    },
+    {
+      "source": "/es/lab",
+      "destination": "/lab-capture/lab.html"
+    },
+    {
+      "source": "/id/lab",
+      "destination": "/lab-capture/lab.html"
+    },
+    {
+      "source": "/pt/lab",
+      "destination": "/lab-capture/lab.html"
     }
   ],
   "redirects": [
     {
       "source": "/lab/",
       "destination": "/lab",
+      "permanent": true
+    },
+    {
+      "source": "/de/lab/",
+      "destination": "/de/lab",
+      "permanent": true
+    },
+    {
+      "source": "/es/lab/",
+      "destination": "/es/lab",
+      "permanent": true
+    },
+    {
+      "source": "/id/lab/",
+      "destination": "/id/lab",
+      "permanent": true
+    },
+    {
+      "source": "/pt/lab/",
+      "destination": "/pt/lab",
       "permanent": true
     }
   ]
