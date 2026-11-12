@@ -3,7 +3,9 @@
  */
 const SUPABASE_URL = "https://nkqsgqjprijmgmkzychf.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_RKcYs55WAv0NDWgLMS3HZg_uWqKxKuk";
-const SUPABASE_REDIRECT = `${location.origin}${location.pathname}`;
+// Always return to the lab after Google authentication, regardless of the page
+// from which the user started signing in.
+const SUPABASE_REDIRECT = new URL("/lab.html", window.location.origin).toString();
 
 const legacyApi = /\/api\/(?:auth|me|payments)(?:\/|$)/;
 const originalFetch = window.fetch.bind(window);
