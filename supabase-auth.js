@@ -53,7 +53,10 @@ function replaceLegacyGoogleLinks() {
   document.querySelectorAll('a[href*="auth/google/start"]').forEach((link) => {
     link.href = "#supabase-google-sign-in";
     link.removeAttribute("data-sveltekit-reload");
-    link.addEventListener("click", (event) => { event.preventDefault(); signIn(); });
+    if (!link.dataset.supabaseAuthBound) {
+      link.dataset.supabaseAuthBound = "true";
+      link.addEventListener("click", (event) => { event.preventDefault(); signIn(); });
+    }
     const label = link.querySelector(".label");
     if (label) label.textContent = "Sign in with Google";
   });
@@ -73,6 +76,7 @@ function removeLegacyControls() {
 
 function installStandalonePanel() {
   document.querySelectorAll("[role=dialog], .backdrop").forEach((dialog) => {
+    if (dialog.matches("[data-supabase-auth-panel]") || dialog.querySelector("[data-supabase-auth-panel]")) return;
     const value = text(dialog);
     if (!value.includes("google") && !value.includes("open the lab") && !value.includes("abrir o laboratório") && !value.includes("labor öffnen")) return;
     const panel = dialog.querySelector(".panel") || dialog;
