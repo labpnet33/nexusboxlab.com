@@ -19,6 +19,24 @@
   let guestVideos = readVideos();
   window.__NBL_GUEST_VIDEOS = guestVideos;
 
+  const VIDEO_DB = "nbl-guest-video-blobs-v1";
+  const openVideoDb = () => new Promise((resolve, reject) => {
+    const request = indexedDB.open(VIDEO_DB, 1);
+    request.onupgradeneeded = () => request.result.createObjectStore("videos");
+    request.onsuccess = () => resolve(request.result);
+    request.onerror = () => reject(request.error);
+  });
+  window.__NBL_SAVE_GUEST_VIDEO_BLOB = async (id, blob) => {
+    const db = await openVideoDb();
+    await new Promise((resolve, reject) => {
+      const tx = db.transaction("videos", "readwrite");
+      tx.objectStore("videos").put(blob, id);
+      tx.oncomplete = resolve;
+      tx.onerror = () => reject(tx.error);
+    });
+    db.close();
+  };
+
   const json = (value, status = 200) => new Response(JSON.stringify(value), {
     status,
     headers: { "Content-Type": "application/json", "Cache-Control": "no-store" }
