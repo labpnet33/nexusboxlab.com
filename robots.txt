@@ -1,8 +1,8 @@
-# nexusboxlab.com
+# nexbox-omega.vercel.app
 User-agent: *
 Allow: /
 # The API is not for search engines. (The lab is NOT blocked here: it carries
 # its own "noindex", which crawlers can only see if they're allowed to load it.)
 Disallow: /api/
 
-Sitemap: https://nexusboxlab.com/sitemap.xml
+Sitemap: https://nexbox-omega.vercel.app/sitemap.xml
