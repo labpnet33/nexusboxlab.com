@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/lab",
+      "destination": "/lab-capture/lab.html"
+    }
+  ]
+}
