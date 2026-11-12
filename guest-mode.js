@@ -40,7 +40,6 @@
   document.addEventListener("click", (event) => {
     const control = event.target.closest("a,button,[role='button']");
     if (!control) return;
-    const label = (control.innerText || control.textContent || "").replace(/\s+/g, " ").trim();
     const href = control.getAttribute("href") || "";
     if (authHref.test(href)) {
       event.preventDefault();
