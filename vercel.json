@@ -6,6 +6,10 @@
       "destination": "/lab-capture/lab.html"
     },
     {
+      "source": "/lab/:path*",
+      "destination": "/lab-capture/lab.html"
+    },
+    {
       "source": "/lab.html",
       "destination": "/lab-capture/lab.html"
     },
@@ -86,6 +90,71 @@
       "source": "/pt/lab/",
       "destination": "/pt/lab",
       "permanent": true
+    }
+  ],
+  "headers": [
+    {
+      "source": "/lab",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store"
+        }
+      ]
+    },
+    {
+      "source": "/lab/",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store"
+        }
+      ]
+    },
+    {
+      "source": "/lab.html",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store"
+        }
+      ]
+    },
+    {
+      "source": "/de/lab",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store"
+        }
+      ]
+    },
+    {
+      "source": "/es/lab",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store"
+        }
+      ]
+    },
+    {
+      "source": "/id/lab",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store"
+        }
+      ]
+    },
+    {
+      "source": "/pt/lab",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store"
+        }
+      ]
     }
   ]
 }
