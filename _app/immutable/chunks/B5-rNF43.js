@@ -1,0 +1,1 @@
+var e=new URL(`../assets/icon-for-dark-bg.CSJANqcY.svg`,import.meta.url).href;export{e as t};
