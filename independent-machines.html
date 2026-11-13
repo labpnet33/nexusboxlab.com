@@ -26,7 +26,7 @@ button{cursor:pointer}button:focus-visible,a:focus-visible,input:focus-visible,s
 .live{font-size:11px;font-weight:800;letter-spacing:.08em;color:#8ff4b8}.live::before{content:"●";padding-right:7px}
 .stage{width:min(100%,405px);aspect-ratio:9/16;overflow:hidden;border-radius:15px;border:1px solid #526085;background:#0b1431;box-shadow:0 14px 50px #050a20}
 .stage canvas{display:block;width:100%;height:100%;object-fit:cover}
-.preview-actions{display:flex;gap:9px;width:min(100%,405px);margin-top:12px}
+.preview-actions{display:flex;flex-wrap:wrap;gap:9px;width:min(100%,405px);margin-top:12px}.preview-actions .secondary{flex:1 1 40%}
 .secondary{flex:1;background:#1d2944;color:#fff;border:1px solid #3a4c71;border-radius:11px;padding:12px 11px;font-size:13px;font-weight:800}
 .primary{width:100%;background:linear-gradient(110deg,#82eaf8,#f5b4d2);color:#071124;border:0;border-radius:12px;padding:14px;font-size:14px;font-weight:900}
 .secondary:hover,.primary:hover{filter:brightness(1.08)}
@@ -71,7 +71,8 @@ footer{font-size:12px;color:#687d9e;text-align:center;margin-top:45px}
 <section class="panel preview-panel" aria-label="Live simulation preview">
 <div class="preview-top"><h2 id="scene-name">Pendulum Crusher</h2><span class="live" id="live-label">LIVE PHYSICS</span></div>
 <div class="stage"><canvas id="stage" width="720" height="1280" aria-label="Live simulated crusher and moving balls" role="img"></canvas></div>
-<div class="preview-actions"><button class="secondary" id="pause" type="button">Pause</button><button class="secondary" id="restart" type="button">↻ New run</button><button class="secondary" id="mute" type="button">Sound: on</button></div>
+<div class="preview-actions"><button class="secondary" id="pause" type="button">Pause</button><button class="secondary" id="restart" type="button">↻ Random run</button><button class="secondary" id="replay" type="button">↺ Replay same run</button><button class="secondary" id="mute" type="button">Sound: on</button></div>
+<p class="mobile-tip">Current run seed: <output id="seed-value">—</output>. Random generates a new run; Replay uses the exact same seed and settings.</p>
 <p class="mobile-tip">Preview simulates locally on your device. The export runs independently from frame zero.</p>
 </section>
 <section class="panel controls" aria-labelledby="settings-title"><div class="pad">
