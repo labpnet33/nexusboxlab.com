@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#111326">
+<title>Creator Machines — NexusBoxLab</title>
+<meta name="description" content="Explore six high-impact motion and color recipes for creating satisfying short-form physics videos.">
+<style>
+:root{font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#f7f8ff;background:#090b19;font-synthesis:none}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(circle at 8% 2%,#273276 0,transparent 35%),radial-gradient(circle at 90% 12%,#42204e 0,transparent 37%),#090b19}
+a{color:inherit;text-decoration:none}button{font:inherit}button:focus-visible,a:focus-visible{outline:3px solid #7cf9fa;outline-offset:4px}
+.shell{max-width:1180px;margin:auto;padding:24px 22px 90px}
+nav{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:76px}
+.brand{display:flex;align-items:center;gap:10px;font-size:18px;font-weight:900;letter-spacing:-.6px}
+.mark{display:grid;place-items:center;width:36px;height:36px;border-radius:12px;background:linear-gradient(135deg,#f472b6,#fb923c 55%,#22d3ee);color:#0b1021;font-weight:1000;font-size:20px}
+.back{border:1px solid #495171;padding:11px 15px;border-radius:999px;font-size:13px;font-weight:700;background:#15182d}
+.eyebrow{text-transform:uppercase;letter-spacing:.22em;font-size:12px;color:#8be3fa;font-weight:800}
+h1{font-size:clamp(38px,6.8vw,78px);line-height:1.04;letter-spacing:-.055em;margin:15px 0;max-width:900px}
+.accent{background:linear-gradient(95deg,#ff79ba,#ffb866 50%,#7ff8ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{color:#b9c1e0;line-height:1.7;max-width:780px;font-size:17px;margin-bottom:24px}
+.note{display:inline-block;color:#a8b6d7;font-size:13px;padding:10px 14px;border:1px solid #394062;border-radius:14px;background:#10152b}
+.toolbar{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-top:55px;margin-bottom:18px;flex-wrap:wrap}
+h2{margin:0;font-size:22px;letter-spacing:-.6px}
+.toolbar p{margin:0;color:#9ea9ce;font-size:14px}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.card{position:relative;overflow:hidden;border:1px solid #343958;background:#111529;border-radius:22px;box-shadow:0 20px 38px rgba(0,0,0,.12);transition:transform .2s,border-color .2s}
+.card:hover{transform:translateY(-3px);border-color:#7d8be1}
+.art{height:225px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;background:radial-gradient(circle,#253860,#0d1435 64%,#090c1e)}
+.art::before{content:"";position:absolute;inset:21px 24% 21px;border:4px solid var(--ring);border-radius:50%;box-shadow:0 0 30px var(--glow),inset 0 0 30px var(--glow);animation:orbit 9s linear infinite}
+.art::after{content:"";width:115px;height:12px;border:5px solid var(--ram);border-radius:8px;background:#14223a;box-shadow:0 0 18px var(--glow);position:absolute;transform:rotate(34deg);animation:thrust 1.8s ease-in-out infinite alternate}
+.art .bubbles{z-index:1;position:absolute;inset:25%;border-radius:50%;background:radial-gradient(circle at 27% 27%,var(--ball) 0 8px,transparent 9px),radial-gradient(circle at 75% 42%,var(--ball) 0 5px,transparent 6px),radial-gradient(circle at 42% 79%,var(--ball) 0 9px,transparent 10px),radial-gradient(circle at 55% 52%,#fff 0 3px,transparent 4px);filter:drop-shadow(0 0 8px var(--ball));animation:bounce 2.3s ease-in-out infinite alternate}
+.art .ring{position:absolute;width:90px;height:90px;border:2px dashed var(--ring);border-radius:50%;animation:orbit 5s linear infinite reverse}
+.card:nth-child(2) .art::before,.card:nth-child(5) .art::before{border-radius:16%}
+.card:nth-child(3) .art::before{border-radius:28% 55% 20% 55%}
+.card:nth-child(4) .art::before{border-radius:45% 55% 45% 55%;transform:rotate(45deg)}
+.card:nth-child(5) .art::after{width:150px;animation-duration:1.1s}
+.card:nth-child(6) .art::after{width:110px;transform:rotate(-45deg);animation-duration:1.35s}
+.card:nth-child(3) .art::after,.card:nth-child(1) .art::after{animation:spinning 2s linear infinite}
+@keyframes orbit{to{transform:rotate(360deg)}}
+@keyframes thrust{from{transform:translateY(-32px) rotate(34deg)}to{transform:translateY(32px) rotate(34deg)}}
+@keyframes spinning{to{transform:rotate(360deg)}}
+@keyframes bounce{to{transform:translate(10px,-12px) rotate(15deg)}}
+.card-body{padding:20px}
+.tag{font-size:11px;letter-spacing:.13em;text-transform:uppercase;font-weight:800;color:var(--tag)}
+.card h3{font-size:23px;letter-spacing:-.7px;margin:9px 0 8px}
+.card p{color:#b1bbd8;font-size:14px;line-height:1.55;min-height:66px;margin:0}
+.spec{display:flex;flex-wrap:wrap;gap:6px;margin:15px 0}
+.spec span{font-size:11px;padding:6px 8px;color:#c6d2ea;background:#222941;border-radius:8px}
+.create{width:100%;padding:14px 16px;color:#0a1421;background:linear-gradient(100deg,#87f1ff,#f4a3d5);border:0;border-radius:12px;font-weight:900;cursor:pointer}
+.create:hover{filter:brightness(1.08)}
+.help{margin-top:44px;background:#11162d;border:1px solid #29375b;border-radius:20px;padding:23px 26px;color:#bfc9df;font-size:14px;line-height:1.7}
+.help strong{color:#fff}
+footer{text-align:center;color:#7e8bac;margin-top:48px;font-size:12px}
+@media(max-width:960px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}nav{margin-bottom:55px}}
+@media(max-width:640px){.shell{padding:20px 15px 65px}.grid{grid-template-columns:1fr}.art{height:180px}.card p{min-height:auto}.toolbar{margin-top:40px}nav{margin-bottom:43px}h1{font-size:42px}}
+@media(prefers-reduced-motion:reduce){.art::before,.art::after,.art .bubbles,.art .ring{animation:none}.card{transition:none}}
+</style>
+</head>
+<body>
+<div class="shell">
+<nav aria-label="Main navigation">
+  <a class="brand" href="/"><span class="mark" aria-hidden="true">N</span><span>NexusBoxLab</span></a>
+  <a href="/lab" class="back">Back to Lab</a>
+</nav>
+<header>
+  <span class="eyebrow">Creator collection · Six new combinations</span>
+  <h1>Make the <span class="accent">can't-look-away</span> kind of videos.</h1>
+  <p class="lead">Bold movement, bright contrast, rhythmic crushing, and a rewarding finale. Pick a combination and open it directly in your existing physics lab. Everything remains adjustable.</p>
+  <div class="note">Built from existing physics mechanisms, with new motion and visual recipes. Illustrations below are stylized, not rendered output.</div>
+</header>
+<section aria-labelledby="collection-title">
+  <div class="toolbar"><h2 id="collection-title">Creator machine remixes</h2><p>Optimized as starting points for short vertical clips</p></div>
+  <div class="grid">
+    <article class="card" style="--ring:#22d3ee;--glow:#00d8ff70;--ram:#ff72e6;--ball:#b0ff64;--tag:#70dcff">
+      <div class="art" aria-hidden="true"><span class="bubbles"></span><span class="ring"></span></div>
+      <div class="card-body"><span class="tag">Rotating motion</span><h3>Orbit Vortex</h3><p>A fast rotating crusher in a luminous ring, building toward a bright chain reaction.</p><div class="spec"><span>Revolver</span><span>Electric colors</span><span>Shockwaves</span></div><button class="create" data-machine="orbit">Create Orbit Vortex</button></div>
+    </article>
+    <article class="card" style="--ring:#fb923c;--glow:#ff7e4360;--ram:#f1e4c6;--ball:#ffe265;--tag:#ffb06f">
+      <div class="art" aria-hidden="true"><span class="bubbles"></span><span class="ring"></span></div>
+      <div class="card-body"><span class="tag">Symmetrical impact</span><h3>Twin Thunder</h3><p>Two-sided rhythmic smashing, metallic visuals, and a huge payoff at the end.</p><div class="spec"><span>Quad Smash</span><span>Metal texture</span><span>Sparks</span></div><button class="create" data-machine="thunder">Create Twin Thunder</button></div>
+    </article>
+    <article class="card" style="--ring:#ff66d7;--glow:#ff5bde70;--ram:#97f9ff;--ball:#fcf6a5;--tag:#ff83db">
+      <div class="art" aria-hidden="true"><span class="bubbles"></span><span class="ring"></span></div>
+      <div class="card-body"><span class="tag">Claw movement</span><h3>Hookstorm</h3><p>Curved hooks continuously sweep through glowing balls for a chaotic but readable pattern.</p><div class="spec"><span>Corner Hooks</span><span>Hexagon</span><span>Neon</span></div><button class="create" data-machine="hookstorm">Create Hookstorm</button></div>
+    </article>
+    <article class="card" style="--ring:#b6ff83;--glow:#97ff5660;--ram:#eb98ff;--ball:#86faff;--tag:#c5fa8b">
+      <div class="art" aria-hidden="true"><span class="bubbles"></span><span class="ring"></span></div>
+      <div class="card-body"><span class="tag">Duplication chain</span><h3>Pop Reactor</h3><p>Start with a tiny crowd, then watch every collision multiply the satisfying chaos.</p><div class="spec"><span>Pipe &amp; Fork</span><span>Color shift</span><span>Bubbles</span></div><button class="create" data-machine="reactor">Create Pop Reactor</button></div>
+    </article>
+    <article class="card" style="--ring:#9bafff;--glow:#738dff75;--ram:#a7faf2;--ball:#fdc5ff;--tag:#c2c8ff">
+      <div class="art" aria-hidden="true"><span class="bubbles"></span><span class="ring"></span></div>
+      <div class="card-body"><span class="tag">Precision crushing</span><h3>Prism Slam</h3><p>Large glossy spheres and sharp crystal-like compression inside a dramatic square arena.</p><div class="spec"><span>Big Press</span><span>Glass balls</span><span>Shards</span></div><button class="create" data-machine="prism">Create Prism Slam</button></div>
+    </article>
+    <article class="card" style="--ring:#ff9dbb;--glow:#ff74bf60;--ram:#fbe6a2;--ball:#83edd9;--tag:#ffadc8">
+      <div class="art" aria-hidden="true"><span class="bubbles"></span><span class="ring"></span></div>
+      <div class="card-body"><span class="tag">Cute &amp; satisfying</span><h3>Candy Chaos</h3><p>Pastel balls, playful splashes and quick mechanical swings in a cheerful arena.</p><div class="spec"><span>The Hawk</span><span>Pastels</span><span>Splash</span></div><button class="create" data-machine="candy">Create Candy Chaos</button></div>
+    </article>
+  </div>
+</section>
+<aside class="help"><strong>Posting idea:</strong> Open with the action already visible, keep a clear build-up, and give the viewer a recognizable climax. Try 10–20 seconds first, then compare audience retention across variations. These presets don't guarantee views, and they don't add new underlying WASM physics types; they create fresh combinations using your existing engine.</aside>
+<footer>Preview your selected combination in the Lab, adjust the motion, then render with the existing WebCodecs export pipeline.</footer>
+</div>
+<script>
+(function(){
+  "use strict";
+  var base={
+    machine:"cpress",ramSpeed:1,escalation:0,offsetX:0,offsetY:0,rotation:0,spin:false,spinSpeed:30,ramScale:1,
+    ballSize:19,ballSpeed:600,copies:8,startBalls:1,ballStyle:"flat",ballTheme:"basic",burst:"flash",
+    ballGrow:0,ballSpeedup:0,copiesGrow:0,arenaShape:"ring",arenaStyle:"basic",arenaColor:"purple",
+    arenaLineScale:1,arenaRotation:0,arenaScale:1,arenaSpin:false,arenaSpinSpeed:25,
+    endMode:"full",endTime:30,endBalls:5000,popSound:"pop",popVolume:70,machineSound:"hydraulic",
+    machineVolume:70,arenaSound:"bigpop",arenaVolume:80,background:"solid",backgroundColor:"#1a1740",
+    backgroundColor2:"#41197f",ramStyle:"flat",ramColor:"indigo",title1:"",title2:"",
+    counter:false,titleColor:"#ffffff",accentColor:"#fb923c"
+  };
+  var recipes={
+    orbit:{machine:"revolver",ramSpeed:2.4,spin:true,spinSpeed:36,ramScale:1.13,arenaShape:"ring",arenaStyle:"neon",arenaColor:"cyan",arenaSpin:true,arenaSpinSpeed:-16,ballTheme:"electric",ballStyle:"neon",burst:"ring",ballSize:18,ballSpeed:740,copies:8,startBalls:3,ramStyle:"neon",ramColor:"cyan",background:"radial",backgroundColor:"#080f2a",backgroundColor2:"#22264f",popSound:"sharp",machineSound:"scifi",arenaSound:"explosion",counter:true},
+    thunder:{machine:"quadsmash",ramSpeed:2.15,escalation:3,ramScale:1.05,arenaShape:"square",arenaStyle:"double",arenaColor:"yellow",ballTheme:"gold",ballStyle:"glossy",burst:"sparks",ballSize:22,ballSpeed:520,copies:6,startBalls:4,ramStyle:"metal",ramColor:"silver",background:"diagonal",backgroundColor:"#18131d",backgroundColor2:"#3c2544",popSound:"deep",machineSound:"diesel",arenaSound:"metal",counter:true},
+    hookstorm:{machine:"upperhookcrush",ramSpeed:2.3,spin:true,spinSpeed:-16,ramScale:1.16,arenaShape:"hexagon",arenaStyle:"neon",arenaColor:"pink",ballTheme:"electric",ballStyle:"glass",burst:"stars",ballSize:20,ballSpeed:680,copies:6,startBalls:3,ramStyle:"tech",ramColor:"cyan",background:"aurora",backgroundColor:"#100e2b",backgroundColor2:"#211254",popSound:"glass",machineSound:"electric",arenaSound:"explosion",counter:true},
+    reactor:{machine:"eggofdup",ramSpeed:1.95,escalation:2,arenaShape:"ring",arenaStyle:"aura",arenaColor:"green",ballTheme:"ocean",ballStyle:"glossy",burst:"bubbles",ballSize:17,ballSpeed:640,copies:10,startBalls:2,ramStyle:"gummy",ramColor:"purple",background:"waves",backgroundColor:"#0a1830",backgroundColor2:"#103345",popSound:"bubble",machineSound:"gears",arenaSound:"bigpop",counter:true},
+    prism:{machine:"shapedupper",ramSpeed:2.1,ramScale:1.2,arenaShape:"square",arenaStyle:"neon",arenaColor:"purple",ballTheme:"sunset",ballStyle:"glass",burst:"shards",ballSize:29,ballSpeed:460,copies:6,startBalls:3,ramStyle:"crystal",ramColor:"cyan",background:"radial",backgroundColor:"#0d0c23",backgroundColor2:"#2a1944",popSound:"glass",machineSound:"jet",arenaSound:"nuclear",counter:true},
+    candy:{machine:"thehawk",ramSpeed:2.05,ramScale:1.04,arenaShape:"heart",arenaStyle:"double",arenaColor:"pink",ballTheme:"pastel",ballStyle:"glossy",burst:"splash",ballSize:23,ballSpeed:580,copies:8,startBalls:3,ramStyle:"plastic",ramColor:"pink",background:"aurora",backgroundColor:"#30133a",backgroundColor2:"#174251",popSound:"soft",machineSound:"scifi",arenaSound:"bigpop",counter:false}
+  };
+  document.addEventListener("click",function(event){
+    var button=event.target.closest("button[data-machine]");
+    if(!button)return;
+    var recipe=recipes[button.dataset.machine];
+    if(!recipe)return;
+    var scene=Object.assign({},base,recipe);
+    var seed=crypto.getRandomValues(new Uint32Array(1))[0]||1;
+    var payload=encodeURIComponent(JSON.stringify({v:1,scene:scene,seed:seed,manual:null}));
+    document.cookie="nbl_lab="+payload+"; Path=/; Max-Age=31536000; SameSite=Lax; Secure";
+    window.location.assign("/lab");
+  });
+})();
+</script>
+</body>
+</html>
