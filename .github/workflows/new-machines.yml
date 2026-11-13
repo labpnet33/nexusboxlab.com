@@ -11,6 +11,8 @@ on:
       - 'creator-machines-cta.js'
       - 'vercel.json'
       - 'tests/new-machines.test.cjs'
+      - 'tests/random-runs.test.cjs'
+      - 'lab-capture/_app/immutable/nodes/3.BKRJJ3CC.js'
 
 permissions:
   contents: read
@@ -26,4 +28,4 @@ jobs:
         with:
           persist-credentials: false
       - name: Run dependency-free tests
-        run: node --test tests/new-machines.test.cjs
+        run: node --test tests/*.test.cjs
