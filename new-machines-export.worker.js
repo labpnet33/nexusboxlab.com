@@ -179,10 +179,10 @@ async function exportVideo(data){
   const total=seconds*fps;
   for(let i=0;i<total;i++){
     if(cancelled)throw Error("Cancelled");
-    sim.step(1/60);sim.step(1/60);
     sim.draw(ctx,width,height);
     const frame=new VideoFrame(canvas,{timestamp:Math.round(i*1e6/fps),duration:Math.round(1e6/fps)});
     enc.encode(frame,{keyFrame:i%fps===0});frame.close();
+    sim.step(1/60);sim.step(1/60);
     if(enc.encodeQueueSize>6)await new Promise(resolve=>setTimeout(resolve,8));
     if(i%12===0){progress("Rendering",i/total*.83);await new Promise(resolve=>setTimeout(resolve,0));}
   }
@@ -190,7 +190,7 @@ async function exportVideo(data){
   if(encError)throw encError;
   progress("Encoding audio",.85);
   let audio={samples:[],description:null};
-  if(data.sound!==false)audio=await encodeAudio(sim.events,seconds,data.kind);
+  if(data.sound!==false)audio=await encodeAudio(sim.events.map(e=>({t:e.t/sim.options.speed,power:e.power})),seconds,data.kind);
   progress("Finalizing MP4",.96);
   const buffer=muxMp4(samples,audio.samples,desc,audio.description,width,height,fps);
   progress("Done",1);
