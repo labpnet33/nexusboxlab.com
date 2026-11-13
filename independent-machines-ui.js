@@ -6,13 +6,27 @@ const physics=window.NBLIndependentMachines;
 if(!physics){$("status").textContent="The new physics engine did not load.";return;}
 const canvas=$("stage"),ctx=canvas.getContext("2d",{alpha:false});
 const cfg={kind:"pendulum",seed:randomSeed(),speed:1,density:1,palette:"neon",sound:true};
-const kindFromUrl=new URL(location.href).searchParams.get("kind");
+const initialUrl=new URL(location.href);
+const kindFromUrl=initialUrl.searchParams.get("kind");
 if(physics.KINDS[kindFromUrl])cfg.kind=kindFromUrl;
+const seedFromUrl=initialUrl.searchParams.get("seed");
+if(seedFromUrl&&/^\d{1,10}$/.test(seedFromUrl)){
+ const parsed=Number(seedFromUrl);
+ if(parsed>0&&parsed<=0xffffffff)cfg.seed=parsed>>>0;
+}
 let scene=new physics.Scene(cfg),running=true,previousTime=0,accumulator=0;
 let audioContext=null,muted=false,lastPop=0,worker=null,lastDownloadUrl=null,renderInProgress=false,restorePlay=true;
-function randomSeed(){
- try{return crypto.getRandomValues(new Uint32Array(1))[0]||1;}
- catch{return (Math.random()*0xffffffff)>>>0||1;}
+function randomSeed(previous=0){
+ let next=0;
+ try{next=crypto.getRandomValues(new Uint32Array(1))[0]>>>0;}
+ catch{next=(Math.random()*0x100000000)>>>0;}
+ next=next||1;
+ const old=Number(previous)>>>0;
+ return next===old?((old+1)>>>0)||1:next;
+}
+function updateRunInfo(){
+ $("seed-value").textContent=String(cfg.seed>>>0);
+ try{history.replaceState(null,"","/machines?kind="+encodeURIComponent(cfg.kind)+"&seed="+(cfg.seed>>>0));}catch{}
 }
 function status(msg,type=""){
  const node=$("status");node.textContent=msg;node.className="status"+(type?" "+type:"");
@@ -32,17 +46,20 @@ function readConfig(){
  return {...cfg};
 }
 function resetScene(newSeed=false){
- if(newSeed)cfg.seed=randomSeed();
- scene.set(readConfig());accumulator=0;
+ if(renderInProgress)return;
+ if(newSeed)cfg.seed=randomSeed(cfg.seed);
+ scene.set(readConfig());accumulator=0;previousTime=0;lastPop=0;
+ updateRunInfo();
  if(ctx)scene.draw(ctx,canvas.width,canvas.height);
 }
-function select(kind){
- if(!physics.KINDS[kind])return;
- cfg.kind=kind;cfg.seed=randomSeed();resetScene();
+function select(kind,newSeed=true){
+ if(!physics.KINDS[kind]||renderInProgress)return;
+ cfg.kind=kind;
+ if(newSeed)cfg.seed=randomSeed(cfg.seed);
+ resetScene(false);
  $("scene-name").textContent=physics.KINDS[kind].name;
  document.querySelectorAll("button[data-kind]").forEach(btn=>btn.setAttribute("aria-pressed",String(btn.dataset.kind===kind)));
- try{history.replaceState(null,"","/machines?kind="+encodeURIComponent(kind));}catch{}
- status("Selected "+physics.KINDS[kind].name+". Ready to render.");
+ status("Selected "+physics.KINDS[kind].name+". Run seed: "+cfg.seed+".");
 }
 document.querySelectorAll("button[data-kind]").forEach(btn=>btn.addEventListener("click",()=>{
  ensureAudio();select(btn.dataset.kind);
@@ -90,6 +107,7 @@ function setRendering(value){
  $("render").disabled=value;$("render").textContent=value?"Rendering…":"Render MP4 video";
  $("cancel").hidden=!value;
  document.querySelectorAll("button[data-kind]").forEach(btn=>btn.disabled=value);
+ ["speed","density","palette","duration","quality","audio","restart","replay","pause","mute"].forEach(id=>{$(id).disabled=value;});
 }
 function cleanupWorker(){
  if(worker){worker.terminate();worker=null;}
@@ -141,10 +159,21 @@ $("palette").addEventListener("change",()=>resetScene(false));
 $("duration").addEventListener("input",readConfig);
 $("audio").addEventListener("change",readConfig);
 $("pause").addEventListener("click",()=>{ensureAudio();audioContext?.resume?.().catch(()=>{});setPlaying(!running);});
-$("restart").addEventListener("click",()=>{ensureAudio();audioContext?.resume?.().catch(()=>{});resetScene(true);setPlaying(true);status("New deterministic run started.");});
+$("restart").addEventListener("click",()=>{
+ if(renderInProgress)return;
+ ensureAudio();audioContext?.resume?.().catch(()=>{});
+ const previous=cfg.seed;resetScene(true);setPlaying(true);
+ status("New random run: seed "+cfg.seed+" (previous: "+previous+").","good");
+});
+$("replay").addEventListener("click",()=>{
+ if(renderInProgress)return;
+ ensureAudio();audioContext?.resume?.().catch(()=>{});
+ resetScene(false);setPlaying(true);
+ status("Replaying seed "+cfg.seed+" with the same settings.","good");
+});
 $("mute").addEventListener("click",()=>{ensureAudio();audioContext?.resume?.().catch(()=>{});muted=!muted;$("mute").textContent="Sound: "+(muted?"off":"on");});
 $("render").addEventListener("click",()=>{ensureAudio();audioContext?.resume?.().catch(()=>{});startRender();});
 $("cancel").addEventListener("click",()=>{if(!worker)return;cleanupWorker();status("Export cancelled. No project settings were lost.");setProgress(0);});
 window.addEventListener("beforeunload",()=>{worker?.terminate();if(lastDownloadUrl)URL.revokeObjectURL(lastDownloadUrl);});
-readConfig();select(cfg.kind);requestAnimationFrame(frame);
+readConfig();select(cfg.kind,false);requestAnimationFrame(frame);
 })();
