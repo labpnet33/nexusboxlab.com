@@ -20,6 +20,7 @@
   function link(mobile) {
     var a = document.createElement("a");
     a.href = "/machines";
+    a.setAttribute("data-sveltekit-reload","");
     a.className = "nbl-creator-link" + (mobile ? " nbl-creator-link--mobile" : "");
     a.textContent = mobile ? "⚙ New" : "⚙ New Machines";
     a.setAttribute("aria-label","Browse three independent physics machines");
@@ -49,6 +50,7 @@
       var a=document.createElement("a");
       a.className="nbl-independent-card";
       a.href="/machines?kind="+item[0];
+      a.setAttribute("data-sveltekit-reload","");
       a.setAttribute("aria-label","Open "+item[2]+" in the new physics lab");
       var icon=document.createElement("span");icon.textContent=item[1];icon.setAttribute("aria-hidden","true");
       var title=document.createElement("strong");title.textContent=item[2];
