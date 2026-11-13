@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Zigzag Beat Machine</title>
+<style>
+:root{color-scheme:dark;font-family:system-ui,Arial;background:#080b16;color:#edf2ff}*{box-sizing:border-box}body{margin:0}main{max-width:1150px;margin:auto;padding:24px}h1{margin:0 0 6px}p{color:#a5afcb}.layout{display:grid;grid-template-columns:minmax(280px,1fr) minmax(250px,420px);gap:24px}.panel{background:#111729;border:1px solid #29324d;border-radius:16px;padding:20px}label{display:block;margin:15px 0 6px;font-weight:600}input,button,select{width:100%;font:inherit}input[type=file],select{background:#19223b;border:1px solid #384666;border-radius:8px;color:#fff;padding:10px}button{background:#725cff;color:white;border:0;border-radius:9px;padding:12px;margin-top:12px;cursor:pointer}button:disabled{opacity:.4;cursor:not-allowed}.preview{display:flex;justify-content:center;align-items:center;background:#050712;border-radius:12px;overflow:hidden}canvas{display:block;width:auto;height:min(75vh,690px);max-width:100%;aspect-ratio:9/16}.muted{font-size:13px;color:#9aa8c8}#status{min-height:3em;white-space:pre-wrap}@media(max-width:720px){.layout{grid-template-columns:1fr}canvas{height:min(65vh,620px)}} </style></head>
+<body><main><h1>Zigzag Beat Machine</h1><p>Independent beat-reactive animation prototype · 30 seconds · 3 objects · neon trails, particles and glow</p><div class="layout"><section class="panel">
+<label for="audio">Upload your audio (MP3 / WAV / supported browser audio)</label><input id="audio" type="file" accept="audio/*">
+<label for="offset">Start position (seconds)</label><input id="offset" type="number" min="0" step="1" value="0">
+<label for="seed">Visual variation seed</label><input id="seed" type="number" value="2026" step="1">
+<button id="analyze">Analyze music and generate</button><button id="play" disabled>Play synchronized preview</button><button id="stop" disabled>Stop</button>
+<p id="status" role="status">Upload an audio file to begin.</p>
+<p class="muted">Audio stays in your browser in this prototype. Beat detection uses onset-energy peaks; results are estimates and can be refined by a future server-side analysis worker. A production-grade MP4 exporter is not included in this prototype.</p>
+</section><section class="preview"><canvas id="scene" width="1080" height="1920" aria-label="Zigzag beat animation preview"></canvas></section></div></main>
+<script type="module">
+const $=id=>document.getElementById(id);
+const canvas=$('scene'),ctx=canvas.getContext('2d',{alpha:false}),audio=new Audio();
+let buffer=null,beats=[],routes=[],playing=false,startTime=0,raf=0,objectUrl=null;
+const DURATION=30,W=1080,H=1920,TAU=Math.PI*2;
+const clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
+const lerp=(a,b,t)=>a+(b-a)*t;
+function random(seed){let x=seed|0;return ()=>{x^=x<<13;x^=x>>>17;x^=x<<5;return (x>>>0)/4294967296}}
+function analyzeBeats(b,start,duration){
+ const sr=b.sampleRate,ch=b.getChannelData(0),hop=512,win=1024,first=Math.floor(start*sr),last=Math.min(ch.length,Math.floor((start+duration)*sr));
+ const energies=[];let previous=0;
+ for(let p=first;p+win<last;p+=hop){let sum=0;for(let i=0;i<win;i+=4){const v=ch[p+i];sum+=v*v}const rms=Math.sqrt(sum/(win/4));energies.push(Math.max(0,rms-previous*.75));previous=rms}
+ const candidates=[];
+ for(let i=3;i<energies.length-3;i++){let sum=0;for(let j=Math.max(0,i-24);j<=Math.min(energies.length-1,i+24);j++)sum+=energies[j];const avg=sum/(Math.min(energies.length-1,i+24)-Math.max(0,i-24)+1);if(energies[i]>avg*1.55&&energies[i]>0.003&&energies[i]>=energies[i-1]&&energies[i]>energies[i+1]){const t=i*hop/sr;if(!candidates.length||t-candidates[candidates.length-1]>.20)candidates.push(t)}}
+ if(candidates.length<8){const fallback=[];for(let t=0;t<duration;t+=.5)fallback.push(t);return fallback}
+ return [0,...candidates.filter(t=>t>0.1&&t<duration),duration];
+}
+function generate(seed){const rand=random(seed);routes=[];for(let o=0;o<3;o++){let x=150+o*390,y=1770,pts=[{x,y,t:0}];const jitter=o*.045;for(let k=1;k<beats.length;k++){const t=beats[k];const dir=k%2?1:-1;const dx=(160+rand()*190)*dir; x=clamp(x+dx,90,990);if(x<110||x>970)x=clamp(540+(rand()-.5)*650,100,980);y=1770-(t/DURATION)*1570;pts.push({x,y,t:clamp(t+jitter,0,DURATION)})}routes.push(pts)}}
+function pos(pts,t){let i=1;while(i<pts.length&&pts[i].t<t)i++;if(i>=pts.length)return pts.at(-1);const a=pts[i-1],b=pts[i],u=clamp((t-a.t)/Math.max(.001,b.t-a.t),0,1);return {x:lerp(a.x,b.x,u),y:lerp(a.y,b.y,u)}}
+function draw(t){
+ ctx.fillStyle='#070b17';ctx.fillRect(0,0,W,H);
+ const grid=100;ctx.strokeStyle='#152039';ctx.lineWidth=2;for(let x=0;x<W;x+=grid){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke()}for(let y=0;y<H;y+=grid){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke()}
+ const colors=['#22edff','#f05aff','#ffe46b'];
+ routes.forEach((pts,o)=>{const color=colors[o];ctx.save();ctx.lineJoin='round';ctx.lineCap='round';ctx.shadowBlur=38;ctx.shadowColor=color;ctx.strokeStyle=color;ctx.lineWidth=14;ctx.beginPath();let started=false;for(const p of pts){if(p.t>t)break;if(!started){ctx.moveTo(p.x,p.y);started=true}else ctx.lineTo(p.x,p.y)}if(started){const p=pos(pts,t);ctx.lineTo(p.x,p.y);ctx.stroke()}ctx.restore();
+ const p=pos(pts,t);ctx.save();ctx.shadowColor=color;ctx.shadowBlur=45;ctx.fillStyle=color;ctx.beginPath();ctx.arc(p.x,p.y,22,0,TAU);ctx.fill();ctx.strokeStyle='#fff';ctx.lineWidth=5;ctx.stroke();ctx.restore();
+ for(let i=1;i<pts.length;i++){const beat=pts[i];const age=t-beat.t;if(age>=0&&age<.34){for(let j=0;j<12;j++){const angle=j*TAU/12+o;const r=age*260;ctx.globalAlpha=1-age/.34;ctx.fillStyle=color;ctx.beginPath();ctx.arc(beat.x+Math.cos(angle)*r,beat.y+Math.sin(angle)*r,7*(1-age/.34),0,TAU);ctx.fill()}ctx.globalAlpha=1}}});
+ ctx.fillStyle='#d9e5ff';ctx.font='bold 38px system-ui';ctx.fillText('ZIGZAG BEAT MACHINE',55,78);ctx.font='28px system-ui';ctx.fillStyle='#9eacd2';ctx.fillText(t.toFixed(2)+' / 30.00 s',55,125);
+}
+function stop(){playing=false;audio.pause();cancelAnimationFrame(raf);$('stop').disabled=true;$('play').disabled=!routes.length}
+$('audio').addEventListener('change',()=>{stop();buffer=null;routes=[];beats=[];if(objectUrl)URL.revokeObjectURL(objectUrl);objectUrl=null;$('status').textContent='Ready to analyze.';$('play').disabled=true});
+$('analyze').addEventListener('click',async()=>{const file=$('audio').files[0];if(!file){$('status').textContent='Select an audio file first.';return}stop();$('analyze').disabled=true;$('status').textContent='Decoding audio and detecting beat events…';try{const ac=new (window.AudioContext||window.webkitAudioContext)();try{buffer=await ac.decodeAudioData(await file.arrayBuffer())}finally{await ac.close()}const offset=Number($('offset').value)||0;if(offset<0||offset>=buffer.duration)throw Error('Start position must be within the song.');const length=Math.min(DURATION,buffer.duration-offset);beats=analyzeBeats(buffer,offset,length);if(length<DURATION){beats=beats.filter(t=>t<=length);beats.push(DURATION)}generate(Number($('seed').value)||2026);if(objectUrl)URL.revokeObjectURL(objectUrl);objectUrl=URL.createObjectURL(file);audio.src=objectUrl;audio.preload='auto';audio.currentTime=offset;draw(0);$('play').disabled=false;$('status').textContent='Generated '+beats.length+' timing points. Preview is ready. Estimated rhythm may need adjustment for complex songs.'}catch(e){$('status').textContent='Analysis failed: '+e.message}finally{$('analyze').disabled=false}});
+$('play').addEventListener('click',async()=>{if(!routes.length)return;stop();const offset=Number($('offset').value)||0;audio.currentTime=offset;try{await audio.play()}catch(e){$('status').textContent='Audio playback blocked: '+e.message;return}playing=true;$('play').disabled=true;$('stop').disabled=false;function tick(){if(!playing)return;const t=clamp(audio.currentTime-offset,0,DURATION);draw(t);if(t>=DURATION||audio.ended){stop();return}raf=requestAnimationFrame(tick)}tick()});
+$('stop').addEventListener('click',stop);
+window.addEventListener('pagehide',()=>{stop();if(objectUrl)URL.revokeObjectURL(objectUrl)});
+draw(0);
+</script></body></html>
