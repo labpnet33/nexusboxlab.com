@@ -1,4 +1,4 @@
-/* Non-invasive link to creator machine recipes.
+/* Non-invasive link to independent physics machines.
  * Kept separate from the captured Svelte app to avoid touching the simulator.
  */
 (function () {
@@ -18,8 +18,8 @@
     var a = document.createElement("a");
     a.href = "/machines";
     a.className = "nbl-creator-link" + (mobile ? " nbl-creator-link--mobile" : "");
-    a.textContent = mobile ? "⚡ Remixes" : "⚡ Creator Machines";
-    a.setAttribute("aria-label","Browse new creator machine remixes");
+    a.textContent = mobile ? "⚙ New" : "⚙ New Machines";
+    a.setAttribute("aria-label","Browse three independent physics machines");
     return a;
   }
   function mount() {
