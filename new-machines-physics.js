@@ -22,7 +22,7 @@ class MachineScene {
   }
   rand(){this.rng=(Math.imul(this.rng,1664525)+1013904223)>>>0;return this.rng/4294967296;}
   reset(){
-    this.rng=this.options.seed;this.t=0;this.balls=[];this.bits=[];this.crushed=0;this.spawnCount=0;this.nextSpawn=0;this.events=[];this.frameEvents=[];
+    this.rng=this.options.seed;this.t=0;this.balls=[];this.bits=[];this.crushed=0;this.spawnCount=0;this.nextSpawn=0;this.events=[];this.frameEvents=[];this.lastAudioEvent=-10;
     for(let i=0;i<6*this.options.density;i++)this.spawn(true);
   }
   spawn(initial=false,x,y,r){
@@ -50,7 +50,7 @@ class MachineScene {
   crushAt(index,x,y){
     const b=this.balls[index];if(!b)return;
     this.balls.splice(index,1);this.crushed++;this.impulse(b.x,b.y,210+b.r*7,13);
-    if(this.events.length<800)this.events.push({t:this.t,power:clamp(b.r/21,.35,1)});
+    if(this.events.length<1500&&this.t-this.lastAudioEvent>.07){this.events.push({t:this.t,power:clamp(b.r/21,.35,1)});this.lastAudioEvent=this.t;}
     this.frameEvents.push({x:b.x,y:b.y});
     if(this.balls.length<70){
       for(let j=0;j<2;j++){
@@ -78,8 +78,9 @@ class MachineScene {
     const magnets=[0,1,2].map(i=>{const a=this.t*1.58+i*TAU/3;return {x:CX+Math.cos(a)*193,y:CY+Math.sin(a)*193,a};});
     for(let i=this.balls.length-1;i>=0;i--){
       const b=this.balls[i];b.age+=dt;
+      if(b.age>(mode==="magnet"?7:8.5)){this.balls.splice(i,1);continue;}
       if(mode==="magnet"){
-        b.vx+=(CY-b.y)*.62*dt; b.vy+=(b.x-CX)*.62*dt;
+        b.vx+=((CX-b.x)*1.15+(CY-b.y)*.62)*dt; b.vy+=((CY-b.y)*1.15+(b.x-CX)*.62)*dt;
         for(const m of magnets){const dx=m.x-b.x,dy=m.y-b.y,d2=dx*dx+dy*dy+1800;
           const f=Math.min(40000/d2,7);b.vx+=dx*f*dt;b.vy+=dy*f*dt;}
         b.vx*=1-.095*dt;b.vy*=1-.095*dt;
