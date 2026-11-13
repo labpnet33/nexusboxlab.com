@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/machines",
-      "destination": "/viral-machines.html"
+      "destination": "/independent-machines.html"
     },
     {
       "source": "/lab/__data.json",
