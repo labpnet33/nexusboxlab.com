@@ -13,7 +13,7 @@ const kinds=["pendulum","gears","magnet"];
 function advance(scene,seconds){for(let i=0;i<seconds*60;i++)scene.step(1/60);}
 function fakeCtx(){
  const ctx={createLinearGradient(){return {addColorStop(){}};}};
- for(const name of ["save","restore","setTransform","fillRect","beginPath","arc","fill","stroke","moveTo","lineTo","translate","rotate","fillText","setLineDash"]){
+ for(const name of ["save","restore","setTransform","fillRect","beginPath","arc","fill","stroke","moveTo","lineTo","translate","rotate","fillText","setLineDash","closePath"]){
   ctx[name]=()=>{};
  }
  return ctx;
