@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark"><meta name="theme-color" content="#10162e">
+<title>New Physics Machines | NexusBoxLab</title>
+<meta name="description" content="Three genuinely new physics machines with live simulation and high-quality MP4 video export.">
+<style>
+:root{font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;color:#edf3ff;background:#080c18;line-height:1.45}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 10% 4%,#263159 0,transparent 33%),radial-gradient(circle at 95% 12%,#281942 0,transparent 31%),#080c18}
+a{color:inherit;text-decoration:none}button,input,select{font:inherit}
+button{cursor:pointer}button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #7feefb;outline-offset:3px}
+.shell{max-width:1330px;padding:22px 22px 90px;margin:auto}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:35px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:900;font-size:18px}.mark{display:grid;place-items:center;width:35px;height:35px;border-radius:11px;color:#0c1020;background:linear-gradient(130deg,#ff86be,#ffb972,#72e9f2);font-size:22px}
+.links{display:flex;gap:9px;flex-wrap:wrap}.links a{padding:10px 14px;border-radius:12px;border:1px solid #39455f;background:#172139;font-size:13px;font-weight:750}
+.hero{max-width:800px}.eyebrow{color:#82e8ff;letter-spacing:.18em;text-transform:uppercase;font-weight:800;font-size:12px}.hero h1{font-size:clamp(32px,5vw,57px);line-height:1.08;margin:13px 0;letter-spacing:-.055em}.hero h1 span{background:linear-gradient(95deg,#fb90c7,#ffcb91 50%,#83f4fa);color:transparent;background-clip:text}.lead{font-size:15px;color:#b6c2d9;line-height:1.7;margin-bottom:27px}
+.workspace{display:grid;grid-template-columns:minmax(260px,340px) minmax(390px,1fr) minmax(245px,300px);align-items:start;gap:18px}
+.panel{border:1px solid #303e60;border-radius:20px;background:#11192e;box-shadow:0 13px 36px #0002;overflow:hidden}
+.pad{padding:18px}.panel h2{font-size:16px;margin:0 0 15px;color:#f2f7ff}.section-label{color:#8ca2c6;font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:800;margin-bottom:14px}
+.machines{display:grid;gap:10px}.machine{width:100%;display:flex;align-items:center;text-align:left;gap:12px;border:1px solid #34435f;background:#182339;border-radius:13px;color:#f5f7ff;padding:13px;transition:background .15s,border-color .15s}
+.machine:hover{background:#222d49}.machine[aria-pressed="true"]{border-color:#7cefff;background:#1a3550;box-shadow:0 0 0 1px #4ceafa47}
+.machine strong{font-size:14px;display:block}.machine small{font-size:12px;display:block;color:#a6b8da;margin-top:3px}
+.micon{width:42px;height:42px;display:grid;place-items:center;border-radius:11px;background:#22334e;font-size:23px;flex:none}
+.preview-panel{display:flex;flex-direction:column;align-items:center;padding:18px;min-width:0}
+.preview-top{width:100%;display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:10px}.preview-top h2{margin:0;font-size:16px}
+.live{font-size:11px;font-weight:800;letter-spacing:.08em;color:#8ff4b8}.live::before{content:"●";padding-right:7px}
+.stage{width:min(100%,405px);aspect-ratio:9/16;overflow:hidden;border-radius:15px;border:1px solid #526085;background:#0b1431;box-shadow:0 14px 50px #050a20}
+.stage canvas{display:block;width:100%;height:100%;object-fit:cover}
+.preview-actions{display:flex;gap:9px;width:min(100%,405px);margin-top:12px}
+.secondary{flex:1;background:#1d2944;color:#fff;border:1px solid #3a4c71;border-radius:11px;padding:12px 11px;font-size:13px;font-weight:800}
+.primary{width:100%;background:linear-gradient(110deg,#82eaf8,#f5b4d2);color:#071124;border:0;border-radius:12px;padding:14px;font-size:14px;font-weight:900}
+.secondary:hover,.primary:hover{filter:brightness(1.08)}
+.field{margin-bottom:22px}
+.field label{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px;font-weight:700;margin-bottom:8px}
+.field output{color:#89eaff;font-variant-numeric:tabular-nums}
+.field input[type="range"]{width:100%;accent-color:#72e4ed;cursor:pointer}
+.field select{width:100%;background:#18263f;color:#fff;border:1px solid #445775;border-radius:10px;padding:11px}
+.field small{font-size:12px;color:#99a9c6}
+.check{display:flex;align-items:center;gap:11px;font-size:13px;margin:8px 0 18px}.check input{accent-color:#7ee8ef;width:18px;height:18px}
+.render{margin-top:6px}
+.status{font-size:13px;color:#adc1e0;line-height:1.6;margin:11px 0 0;min-height:36px}
+.status.error{color:#ffa0a0}.status.good{color:#94f2ba}
+.progress{width:100%;height:7px;border-radius:9px;background:#253550;margin:12px 0;overflow:hidden}
+.progress>div{width:0;height:100%;background:linear-gradient(90deg,#76dbfb,#f78fc1);transition:width .12s linear}
+.download{display:none;margin-top:10px;color:#8ff4ff;text-decoration:underline;font-size:13px;font-weight:800}
+.download.visible{display:inline-block}
+.tip{margin-top:14px;font-size:12px;color:#96a7c5;line-height:1.65}
+.banner{margin:21px 0 0;padding:16px 20px;background:#151d33;border:1px solid #354363;border-radius:13px;color:#a7bad5;font-size:13px;line-height:1.7}
+.banner strong{color:#fff}
+.mobile-tip{font-size:11px;color:#8397ba}
+footer{font-size:12px;color:#687d9e;text-align:center;margin-top:45px}
+@media(max-width:1140px){.workspace{grid-template-columns:minmax(240px,1fr) minmax(330px,1.25fr)}.controls{grid-column:1/-1}.controls .pad{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:22px}.controls .pad h2,.controls .pad .render,.controls .pad .status,.controls .pad .progress,.controls .pad .tip,.controls .pad .download{grid-column:1/-1}}
+@media(max-width:720px){.shell{padding:16px 13px 70px}.top{margin-bottom:24px}.links a{padding:9px 10px;font-size:12px}.workspace{grid-template-columns:1fr}.preview-panel{order:1}.machines-panel{order:2}.controls{order:3}.hero h1{font-size:36px}.controls .pad{display:block}.machines{grid-template-columns:1fr}.stage{max-width:360px}.panel{border-radius:15px}}
+@media(prefers-reduced-motion:reduce){.machine,.progress>div{transition:none}}
+</style>
+</head><body>
+<div class="shell">
+<nav class="top"><a class="brand" href="/"><span class="mark">N</span>NexusBoxLab</a><div class="links"><a href="/lab">Original lab</a><a href="/">Home</a></div></nav>
+<header class="hero"><span class="eyebrow">Original physics · New machine lab</span>
+<h1>Three completely new <span>working machines.</span></h1>
+<p class="lead">Not reskins of the original nine. These are three independently programmed mechanisms with their own real-time movement, collision physics, crushing effects, and offline MP4 exporting.</p></header>
+<main class="workspace">
+<section class="panel machines-panel" aria-labelledby="pick-title"><div class="pad">
+<h2 id="pick-title">Select your machine</h2>
+<div class="machines">
+<button class="machine" type="button" data-kind="pendulum" aria-pressed="true"><span class="micon">🔨</span><span><strong>Pendulum Crusher</strong><small>A weighted swinging hammer</small></span></button>
+<button class="machine" type="button" data-kind="gears" aria-pressed="false"><span class="micon">⚙️</span><span><strong>Twin Gear Grinder</strong><small>Counter-rotating teeth</small></span></button>
+<button class="machine" type="button" data-kind="magnet" aria-pressed="false"><span class="micon">🧲</span><span><strong>Magnetic Vortex</strong><small>Orbiting magnetic attraction</small></span></button>
+</div><p class="tip">Each choice changes the simulation mechanics, not just its colors or settings.</p>
+</div></section>
+<section class="panel preview-panel" aria-label="Live simulation preview">
+<div class="preview-top"><h2 id="scene-name">Pendulum Crusher</h2><span class="live" id="live-label">LIVE PHYSICS</span></div>
+<div class="stage"><canvas id="stage" width="720" height="1280" aria-label="Live simulated crusher and moving balls" role="img"></canvas></div>
+<div class="preview-actions"><button class="secondary" id="pause" type="button">Pause</button><button class="secondary" id="restart" type="button">↻ New run</button><button class="secondary" id="mute" type="button">Sound: on</button></div>
+<p class="mobile-tip">Preview simulates locally on your device. The export runs independently from frame zero.</p>
+</section>
+<section class="panel controls" aria-labelledby="settings-title"><div class="pad">
+<h2 id="settings-title">Machine &amp; export settings</h2>
+<div class="field"><label for="speed">Machine speed <output for="speed" id="speed-value">1.00×</output></label><input id="speed" type="range" min="0.5" max="2.1" step=".05" value="1"></div>
+<div class="field"><label for="density">Ball density <output for="density" id="density-value">1.00×</output></label><input id="density" type="range" min=".5" max="1.7" step=".1" value="1"></div>
+<div class="field"><label for="palette">Color theme</label><select id="palette"><option value="neon">Electric neon</option><option value="candy">Candy pastel</option><option value="fire">Fiery gold</option></select></div>
+<div class="field"><label for="duration">Video duration <output for="duration" id="duration-value">12 sec</output></label><input id="duration" type="range" min="3" max="30" step="1" value="12"></div>
+<div class="field"><label for="quality">Export quality</label><select id="quality"><option value="720">720 × 1280 · Fast</option><option value="1080">1080 × 1920 · Sharp HD</option></select></div>
+<label class="check"><input id="audio" type="checkbox" checked>Include satisfying crush audio</label>
+<div class="render"><button class="primary" id="render" type="button">Render MP4 video</button><button class="secondary" id="cancel" type="button" hidden style="margin-top:9px;width:100%">Cancel rendering</button></div>
+<div class="progress" role="progressbar" aria-label="Render progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progress"><div id="progress-bar"></div></div>
+<p class="status" role="status" aria-live="polite" id="status">Choose a machine, then render a smooth MP4.</p>
+<a id="download" class="download" download="nexusbox-machine.mp4">Download completed video</a>
+<p class="tip">Offline frame-by-frame encoding using WebCodecs and OffscreenCanvas. H.264 availability depends on your browser. AAC sound is included where supported; otherwise video export continues without audio.</p>
+</div></section>
+</main>
+<div class="banner"><strong>Publishing tips:</strong> The first second already shows movement. Keep the physics readable, use a contrast-rich palette, and aim for a satisfying ending. Try multiple seeds and compare actual viewer retention rather than relying on any claimed viral guarantee.</div>
+<footer>New physics machines are separate from the existing WASM simulation and do not change the original lab.</footer>
+</div>
+<script src="/new-machines-physics.js"></script>
+<script src="/independent-machines-ui.js"></script>
+</body></html>
