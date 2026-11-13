@@ -188,6 +188,7 @@ async function exportVideo(data){
   }
   await enc.flush();
   if(encError)throw encError;
+  if(samples.length!==total)throw Error("H.264 encoder returned "+samples.length+" of "+total+" frames; no incomplete MP4 was saved.");
   progress("Encoding audio",.85);
   let audio={samples:[],description:null};
   if(data.sound!==false)audio=await encodeAudio(sim.events.map(e=>({t:e.t/sim.options.speed,power:e.power})),seconds,data.kind);
